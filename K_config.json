@@ -1,0 +1,25 @@
+{
+    "k_premium_config": {
+        "max_workers": 200,
+        "target_pps": 100000,
+        "theme": "dark_premium",
+        "colors": {
+            "primary": "#00ffff",
+            "secondary": "#ff00ff", 
+            "success": "#00ff00",
+            "danger": "#ff4444"
+        },
+        "assault_presets": {
+            "http_tsunami": {"workers": 120, "strategy": "sustained"},
+            "tcp_vortex": {"workers": 150, "strategy": "burst"},
+            "udp_monsoon": {"workers": 100, "strategy": "bandwidth"},
+            "mixed_apocalypse": {"workers": 180, "strategy": "adaptive"},
+            "total_annihilation": {"workers": 200, "strategy": "maximum"}
+        },
+        "ui_settings": {
+            "animations": true,
+            "sounds": false,
+            "auto_maximize": true
+        }
+    }
+}
