@@ -201,7 +201,8 @@ install_system_deps() {
                 gfortran \
                 pkg-config \
                 tk-dev \
-                tcl-dev
+                tcl-dev \
+                python3-fake-useragent
             ;;
         redhat|centos|fedora)
             sudo $PKG_MGR install -y \
@@ -221,7 +222,8 @@ install_system_deps() {
                 lapack-devel \
                 gcc-gfortran \
                 tk-devel \
-                tcl-devel
+                tcl-devel \
+                python3-fake-useragent
             ;;
         arch)
             sudo pacman -S --noconfirm \
@@ -236,7 +238,8 @@ install_system_deps() {
                 libpng \
                 blas \
                 lapack \
-                gfortran
+                gfortran \
+                python3-fake-useragent
             ;;
         macOS)
             brew install \
@@ -244,7 +247,8 @@ install_system_deps() {
                 freetype \
                 jpeg \
                 libpng \
-                openblas
+                openblas \
+                python3-fake-useragent
             ;;
         windows)
             print_info "On Windows, ensure you have Tkinter installed with your Python distribution"
@@ -264,16 +268,17 @@ install_system_deps() {
                 zlib-dev \
                 freetype-dev \
                 lapack-dev \
-                gfortran
+                gfortran \
+                python3-fake-useragent
             ;;
         *)
             print_warning "Unknown OS - installing common development tools"
             if command_exists apt; then
-                sudo apt install -y python3 python3-pip python3-tk build-essential
+                sudo apt install -y python3 python3-pip python3-tk build-essential python3-fake-useragent
             elif command_exists dnf; then
-                sudo dnf install -y python3 python3-pip python3-tkinter gcc
+                sudo dnf install -y python3 python3-pip python3-tkinter gcc python3-fake-useragent
             elif command_exists pacman; then
-                sudo pacman -S --noconfirm python python-pip tk gcc
+                sudo pacman -S --noconfirm python python-pip tk gcc python3-fake-useragent
             fi
             ;;
     esac
@@ -290,7 +295,7 @@ install_python_packages() {
     print_status "Installing Python packages..."
     
     # Core packages from the script
-    CORE_PACKAGES="matplotlib aiohttp fake-useragent psutil numpy"
+    CORE_PACKAGES="matplotlib aiohttp fake-useragent psutil numpy fake-useragent"
     
     # Additional packages that might be needed
     EXTRA_PACKAGES="asyncio threading socket random time os sys json platform concurrent.futures tkinter scrolledtext"
@@ -299,7 +304,7 @@ install_python_packages() {
     MATPLOTLIB_EXTRAS="pillow cycler kiwisolver pyparsing python-dateutil"
     
     # Networking and performance
-    NETWORKING_PACKAGES="requests urllib3 chardet certifi idna"
+    NETWORKING_PACKAGES="requests urllib3 chardet certifi idna fake-useragent"
     
     # Combine all packages
     ALL_PACKAGES="$CORE_PACKAGES $MATPLOTLIB_EXTRAS $NETWORKING_PACKAGES"
