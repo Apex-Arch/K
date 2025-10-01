@@ -344,4 +344,13 @@ async def main():
     
     # Launch assault
     orchestrator = MultiVectorOrchestrator(num_workers=200)
-    await orchestrator.launch_multi_vector
+    await orchestrator.launch_multi_vector_assault()
+
+if __name__ == "__main__":
+    # Increase system limits for maximum performance
+    try:
+        resource.setrlimit(resource.RLIMIT_NOFILE, (100000, 100000))
+    except:
+        pass
+    
+    asyncio.run(main())
