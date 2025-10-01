@@ -1,22 +1,29 @@
 #!/bin/bash
-echo "⚡ INSTALLING K - PREMIUM ASSAULT SYSTEM..."
+echo "⚡ INSTALLING K PREMIUM - UNIVERSAL COMPATIBILITY"
+
+# Detect operating system
+OS=$(uname -s)
+echo "Detected OS: $OS"
 
 # Install Python dependencies
 pip3 install matplotlib aiohttp fake-useragent psutil
 
-# Install system dependencies
-sudo apt update
-sudo apt install -y python3-tk python3-pip
+# Platform-specific dependencies
+if [ "$OS" = "Linux" ]; then
+    sudo apt update
+    sudo apt install -y python3-tk python3-pip
+    echo "✅ Linux dependencies installed"
+elif [ "$OS" = "Darwin" ]; then
+    # macOS - check if tkinter is available
+    python3 -c "import tkinter" 2>/dev/null || echo "⚠️  Tkinter may need manual installation on macOS"
+    echo "✅ macOS setup complete"
+else
+    echo "⚠️  Windows detected - ensure Python with Tkinter is installed"
+fi
 
-# Increase system limits for premium performance
-echo "* soft nofile 100000" | sudo tee -a /etc/security/limits.conf
-echo "* hard nofile 100000" | sudo tee -a /etc/security/limits.conf
+# Universal optimizations
+echo "* soft nofile 50000" | sudo tee -a /etc/security/limits.conf 2>/dev/null || true
+echo "* hard nofile 50000" | sudo tee -a /etc/security/limits.conf 2>/dev/null || true
 
-# Optimize network stack
-echo "net.core.somaxconn = 100000" | sudo tee -a /etc/sysctl.conf
-echo "net.ipv4.tcp_max_syn_backlog = 100000" | sudo tee -a /etc/sysctl.conf
-
-sudo sysctl -p
-
-echo "✅ K PREMIUM SYSTEM INSTALLED"
+echo "✅ K PREMIUM INSTALLED - UNIVERSAL COMPATIBILITY"
 echo "🚀 RUN: python3 k_ddos.py"
