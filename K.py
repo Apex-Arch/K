@@ -3,7 +3,7 @@
 """
 K.py
 "K" - Premium Dark Mode DDoS Tool with Luxury UI
-ELITE VISUAL ASSAULT FRAMEWORK
+ELITE VISUAL ASSAULT FRAMEWORK - CROSS-PLATFORM COMPATIBLE
 """
 
 import asyncio
@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from fake_useragent import UserAgent
-import matplotlib.font_manager as fm
+import platform
 
 # === PREMIUM CONFIGURATION ===
 TARGET_PPS = 100000
@@ -37,7 +37,9 @@ class KLuxuryGUI:
         self.root.title("K")
         self.root.geometry("1400x900")
         self.root.configure(bg='#0a0a0a')
-        self.root.state('zoomed')  # Start maximized
+        
+        # Cross-platform fullscreen handling
+        self.setup_fullscreen()
         
         # Premium styling
         self.setup_premium_style()
@@ -55,6 +57,21 @@ class KLuxuryGUI:
         # Setup premium GUI
         self.setup_luxury_gui()
         self.setup_premium_charts()
+        
+    def setup_fullscreen(self):
+        """Setup cross-platform fullscreen"""
+        try:
+            # Try different fullscreen methods for different platforms
+            if platform.system() == "Windows":
+                self.root.state('zoomed')  # Windows
+            elif platform.system() == "Darwin":  # macOS
+                self.root.attributes('-fullscreen', True)
+            else:  # Linux and others
+                self.root.attributes('-zoomed', True)
+        except:
+            # Fallback to large window
+            self.root.geometry("1400x900")
+            print("⚠️  Fullscreen not supported, using large window")
         
     def setup_premium_style(self):
         """Configure premium dark theme styling"""
@@ -381,10 +398,11 @@ class KLuxuryGUI:
             "ERROR": self.colors['accent_danger']
         }
         
-        color = colors.get(level, self.colors['text_primary'])
+        color_tag = level.lower()
+        self.log_area.tag_config(color_tag, foreground=colors.get(level, self.colors['text_primary']))
         
-        # Insert with color (using tags)
-        self.log_area.insert(tk.END, f"[{timestamp}] {message}\n")
+        # Insert with color
+        self.log_area.insert(tk.END, f"[{timestamp}] {message}\n", color_tag)
         self.log_area.see(tk.END)
         
     def clear_log(self):
@@ -541,7 +559,6 @@ class KLuxuryGUI:
             for task in tasks:
                 task.cancel()
     
-    # [Previous attack methods remain the same but renamed for premium feel]
     async def _http_assault_unit(self, unit_id, target_ip, target_port):
         """HTTP assault unit"""
         ua = UserAgent()
@@ -649,7 +666,7 @@ def main():
     
     # Show premium warning
     messagebox.showwarning("K - PREMIUM ASSAULT SYSTEM", 
-                          "K PREMIUM DDoS TOOL v21.0\n\n"
+                          "K PREMIUM DDoS TOOL v21.1\n\n"
                           "FOR AUTHORIZED TESTING ONLY\n"
                           "UNAUTHORIZED USE STRICTLY PROHIBITED\n\n"
                           "© K SECURITY SYSTEMS")
