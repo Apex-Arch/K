@@ -1,11 +1,9 @@
-# Install dependencies (if needed)
-pip3 install requests
+# Optimize system first
+chmod +x optimize_for_high_pps.sh
+sudo ./optimize_for_high_pps.sh
 
-# First, scan for open ports
-python3 scan_all_ports.py
+# Install dependencies
+pip3 install aiohttp fake-useragent
 
-# Launch the main Slowloris attack
-python3 slowloris_port_saturation.py
-
-# In separate terminal, monitor the attack progress
-python3 monitor_attack.py
+# Run the high-velocity botnet
+sudo python3 high_velocity_botnet.py
