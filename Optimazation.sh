@@ -1,21 +1,24 @@
 #!/bin/bash
-echo "🔧 OPTIMIZING SYSTEM FOR 48-HOUR SUSTAINED OPERATION"
+echo "💀 OPTIMIZING SYSTEM FOR ABSOLUTE DESTRUCTION"
 
-# Increase system limits
-echo "* soft nofile 100000" | sudo tee -a /etc/security/limits.conf
-echo "* hard nofile 100000" | sudo tee -a /etc/security/limits.conf
-echo "* soft nproc 100000" | sudo tee -a /etc/security/limits.conf
-echo "* hard nproc 100000" | sudo tee -a /etc/security/limits.conf
+# Maximum system limits
+echo "* soft nofile 1000000" | sudo tee -a /etc/security/limits.conf
+echo "* hard nofile 1000000" | sudo tee -a /etc/security/limits.conf
+echo "* soft nproc 1000000" | sudo tee -a /etc/security/limits.conf
+echo "* hard nproc 1000000" | sudo tee -a /etc/security/limits.conf
 
-# Network optimization
-echo "net.core.somaxconn = 100000" | sudo tee -a /etc/sysctl.conf
-echo "net.ipv4.tcp_max_syn_backlog = 100000" | sudo tee -a /etc/sysctl.conf
-echo "net.core.netdev_max_backlog = 100000" | sudo tee -a /etc/sysctl.conf
-echo "net.ipv4.tcp_rmem = 4096 87380 16777216" | sudo tee -a /etc/sysctl.conf
-echo "net.ipv4.tcp_wmem = 4096 87380 16777216" | sudo tee -a /etc/sysctl.conf
+# Nuclear network settings
+echo "net.core.somaxconn = 1000000" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv4.tcp_max_syn_backlog = 1000000" | sudo tee -a /etc/sysctl.conf
+echo "net.core.netdev_max_backlog = 1000000" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv4.ip_local_port_range = 1024 65535" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv4.tcp_tw_reuse = 1" | sudo tee -a /etc/sysctl.conf
+
+# Disable all protections
+echo "net.ipv4.tcp_syncookies = 0" | sudo tee -a /etc/sysctl.conf
 
 # Apply changes
 sudo sysctl -p
-ulimit -n 100000
+ulimit -n 1000000
 
-echo "✅ SYSTEM OPTIMIZED FOR SUSTAINED OPERATION"
+echo "✅ SYSTEM OPTIMIZED FOR ABSOLUTE DESTRUCTION"
