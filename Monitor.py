@@ -13,7 +13,7 @@ def monitor_system():
         print(f"[{datetime.datetime.now()}] CPU: {cpu}% | "
               f"Memory: {memory.percent}% | Disk: {disk.percent}%")
         
-        time.sleep(300)  # Log every 5 minutes
+        time.sleep(60)  # Log every minute
 
 if __name__ == "__main__":
     monitor_system()
