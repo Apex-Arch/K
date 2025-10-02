@@ -27,7 +27,7 @@ import platform
 
 # === PREMIUM CONFIGURATION ===
 TARGET_PPS = 100000
-MAX_WORKERS = 500
+MAX_WORKERS = 1500
 
 class KLuxuryGUI:
     """"K" - Premium Dark Luxury DDoS Interface"""
@@ -666,7 +666,7 @@ def main():
     
     # Show premium warning
     messagebox.showwarning("K - PREMIUM ASSAULT SYSTEM", 
-                          "K PREMIUM DDoS TOOL v21.1\n\n"
+                          "K DDoS TOOL v21.1\n\n"
                           "FOR AUTHORIZED TESTING ONLY\n"
                           "UNAUTHORIZED USE STRICTLY PROHIBITED\n\n"
                           "© K SECURITY SYSTEMS")
