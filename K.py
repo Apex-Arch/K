@@ -135,7 +135,7 @@ class KLuxuryGUI:
         logo_label.pack(side=tk.LEFT)
         
         # Title
-        title_label = tk.Label(logo_frame, text="PREMIUM ASSAULT SYSTEM", 
+        title_label = tk.Label(logo_frame, text="", 
                               font=('Helvetica', 16), fg=self.colors['text_secondary'], 
                               bg=self.colors['bg_dark'])
         title_label.pack(side=tk.LEFT, padx=(10, 0), pady=(15, 0))
