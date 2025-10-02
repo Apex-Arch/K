@@ -27,7 +27,7 @@ import platform
 
 # === PREMIUM CONFIGURATION ===
 TARGET_PPS = 100000
-MAX_WORKERS = 200
+MAX_WORKERS = 500
 
 class KLuxuryGUI:
     """"K" - Premium Dark Luxury DDoS Interface"""
@@ -160,7 +160,7 @@ class KLuxuryGUI:
         control_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=False)
         
         # Target Configuration
-        target_section = self.create_section(control_frame, "TARGET CONFIGURATION", 0)
+        target_section = self.create_section(control_frame, "TARGET CONFIG", 0)
         
         tk.Label(target_section, text="IP ADDRESS", font=('Helvetica', 9, 'bold'),
                 fg=self.colors['text_secondary'], bg=self.colors['bg_panel']).grid(row=0, column=0, sticky=tk.W)
